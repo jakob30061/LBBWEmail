@@ -18,6 +18,7 @@ module.exports = async (env, options) => {
     devtool: "source-map",
     entry: {
       polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
+      interceptor: "./src/interceptor.ts",
     },
     output: {
       clean: true,
@@ -72,9 +73,9 @@ module.exports = async (env, options) => {
         ],
       }),
       new HtmlWebpackPlugin({
-        filename: "taskpane.html",
-        template: "./src/taskpane.html",
-        chunks: ["polyfill", "taskpane"],
+        filename: "index.html",
+        template: "./src/index.html",
+        chunks: ["polyfill", "interceptor"],
       }),
     ],
     devServer: {
