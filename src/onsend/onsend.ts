@@ -25,8 +25,16 @@ g.validateEmailAddresses = validateEmailAddresses;
 
 let addressesDialog: Office.Dialog;
 function validateEmailAddresses(event) {
-    mailboxItem.body.getAsync("text", { asyncContext: event }, result => {
-        let showNotification = false
+    let url: string = `${window.location.origin}/dialog.html`;
+    Office.context.ui.displayDialogAsync(url, getDialogOptions(), dialogResult => {
+        addressesDialog = dialogResult.value;
+        addressesDialog.addEventHandler(Office.EventType.DialogMessageReceived, (message) => receiveMessage(message, event));
+        addressesDialog.addEventHandler(Office.EventType.DialogEventReceived, () => dialogClosed(event));
+    });
+
+/*     mailboxItem.body.getAsync("text", { asyncContext: event }, result => {
+
+        
         if (result.status === Office.AsyncResultStatus.Succeeded) {
             showNotification = result.value.length < 30
 
@@ -53,8 +61,7 @@ function validateEmailAddresses(event) {
                 }
             });
         }
-    });
-    event.completed({ allowEvent: true });
+    }); */
 }
 
 function getDialogOptions(): Office.DialogOptions {
